@@ -71,12 +71,6 @@ void linkShaders(const int program, const int length, ...) {
   glLinkProgram(program);
 }
 
-void draw() {
-
-
-
-}
-
 int main(void) {
   GLFWwindow* window;
   GLuint vao;

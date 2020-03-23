@@ -78,14 +78,14 @@ int main(void) {
   GLuint program;
   GLuint vshader;
   GLuint fshader;
-  GLint uniColor;
-  GLint posAttrib;
+  GLint positionAttrib;
+  GLint colorAttrib;
   char* vglsl = fmap("shaders/vertex.glsl");
   char* fglsl = fmap("shaders/fragment.glsl");
   float vertices[] = {
-    -0.5f, -0.5f,
-     0.0f,  0.5f,
-     0.5f, -0.5f
+    -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+     0.0f,  0.5f, 0.0f, 1.0f, 0.0f,
+     0.5f, -0.5f, 0.0f, 0.0f, 1.0f
   };
 
   atexit(&clean);
@@ -109,16 +109,17 @@ int main(void) {
   funmap(vglsl);
   funmap(fglsl);
 
-  posAttrib = glGetAttribLocation(program, "position");
-  glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
-  glEnableVertexAttribArray(posAttrib);
+  positionAttrib = glGetAttribLocation(program, "position");
+  glVertexAttribPointer(positionAttrib, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), 0);
+  glEnableVertexAttribArray(positionAttrib);
 
-  uniColor = glGetUniformLocation(program, "triangleColor");
+  colorAttrib = glGetAttribLocation(program, "color");
+  glVertexAttribPointer(colorAttrib, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*) (2 * sizeof(float)));
+  glEnableVertexAttribArray(colorAttrib);
 
-  for(float i = 0; !glfwWindowShouldClose(window); i += .05) {
+  while(!glfwWindowShouldClose(window)) {
     usleep(100000);
     glClear(GL_COLOR_BUFFER_BIT);
-    glUniform3f(uniColor, sin(i), cos(i), tan(i));
     glDrawArrays(GL_TRIANGLES, 0, 3);
     glfwSwapBuffers(window);
     glfwPollEvents();

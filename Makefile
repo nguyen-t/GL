@@ -1,6 +1,6 @@
 # Edit to fit needs
 CC = clang
-LIBS =
+LIBS = m glfw GL GLEW
 DEFINES =
 SANS = undefined,address,leak
 WARNS = all pedantic extra
